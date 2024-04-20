@@ -1,7 +1,7 @@
 # Use the base image from SUSE
 FROM registry.suse.com/bci/python:3.11
 # Set the maintainer
-MAINTAINER Wiredquill
+MAINTAINER "Wiredquill"
 
 # Set labels for the image
 LABEL org.opencontainers.image.name=youtube-scraper
