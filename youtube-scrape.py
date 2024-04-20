@@ -1,53 +1,49 @@
-import requests
-from bs4 import BeautifulSoup
+from googleapiclient.discovery import build
 
-# Set your YouTube API key here:
-api_key = 'YOUR_API_KEY'
+# Replace 'YOUR_API_KEY' with your actual API key
+API_KEY = 'YOUR_API_KEY'
+CHANNEL_ID = 'UC...'
 
-# Set the YouTube channel ID here:
-channel_id = 'CHANNEL_ID'
+def get_channel_videos(api_key, channel_id):
+    youtube = build('youtube', 'v3', developerKey=api_key)
 
-# Set the search query here:
-search_query = 'series'
+    # Get the playlist ID of the channel's uploaded videos
+    channels_response = youtube.channels().list(
+        part='contentDetails',
+        id=channel_id
+    ).execute()
 
-url = f'https://www.youtube.com/channel/{channel_id}/videos'
-response = requests.get(url)
+    playlist_id = channels_response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
 
-if response.status_code == 200:
-    soup = BeautifulSoup(response.content, 'html.parser')
-    video_list = []
+    # Get the videos from the playlist
+    videos = []
+    next_page_token = None
 
-    for video in soup.find_all('ytd-video-renderer'):
-        title = video.select_one('.title').text.strip()
-        description = video.select_one('.description').text.strip()
+    while True:
+        playlist_items_response = youtube.playlistItems().list(
+            playlistId=playlist_id,
+            part='snippet',
+            maxResults=50,
+            pageToken=next_page_token
+        ).execute()
 
-        if search_query.lower() in title.lower():
-            video_dict = {
-                'Title': title,
-                'Description': description
-            }
-            video_list.append(video_dict)
+        videos.extend(playlist_items_response['items'])
+        next_page_token = playlist_items_response.get('nextPageToken')
 
-        elif search_query.lower() in description.lower():
-            video_dict = {
-                'Title': title,
-                'Description': description
-            }
-            video_list.append(video_dict)
+        if not next_page_token:
+            break
 
-    for tag in soup.find_all('a', {'class': 'yt-simple-endpoint style-scope ytd-video-renderer'}):
-        tags = [tag.text.strip() for tag in tag.parent.select('.tag')]
+    return videos
 
-        if search_query.lower() in [tag.lower() for tag in tags]:
-            title = tag.parent.select_one('.title').text.strip()
-            description = tag.parent.select_one('.description').text.strip()
+def print_video_info(videos):
+    for video in videos:
+        title = video['snippet']['title']
+        description = video['snippet']['description']
 
-            video_dict = {
-                'Title': title,
-                'Description': description
-            }
-            video_list.append(video_dict)
+        print(f'Title: {title}')
+        print(f'Description: {description}')
+        print('---')
 
-    print(video_list)
-else:
-    print(f'Failed to retrieve the channel videos: {response.status_code}')
+# Example usage
+videos = get_channel_videos(API_KEY, CHANNEL_ID)
+print_video_info(videos)
