@@ -1,6 +1,3 @@
-Here is the updated Dockerfile with the image name changed to `youtube-scraper`:
-
-```
 # Use the base image from SUSE
 FROM registry.suse.com/bci/python:3.11
 
