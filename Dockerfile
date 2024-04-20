@@ -1,12 +1,12 @@
 # Use the base image from SUSE
 FROM registry.suse.com/bci/python:3.11
 # Set the maintainer
-MAINTAINER "Wiredquill"
+
 
 # Set labels for the image
 LABEL org.opencontainers.image.name=youtube-scraper
-LABEL Author="Wiredquill"
-LABEL Description=A Python script to download YouTube transcripts and videos
+LABEL Author=Wiredquill
+LABEL Description="A Python script"
 LABEL Version=1.0
 
 # Set the working directory in the container
