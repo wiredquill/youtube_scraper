@@ -9,6 +9,7 @@ LABEL Author=Your Name
 LABEL Description=A Python script to download YouTube transcripts and videos
 LABEL Version=1.0
 LABEL Image=youtube-scraper
+LABEL Name=youtube-scraper
 
 # Set the working directory in the container
 WORKDIR /app
