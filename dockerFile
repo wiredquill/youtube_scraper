@@ -1,6 +1,13 @@
 # Use the base image from SUSE
 FROM registry.suse.com/bci/python:3.11
 
+# Set maintainer and labels for the image
+
+LABEL Author=Wiredquill
+LABEL Description=A Python script to download YouTube transcripts and videos
+LABEL Version=1.0
+LABEL ImageName=youtube-scraper
+
 # Set the working directory in the container
 WORKDIR /app
 
