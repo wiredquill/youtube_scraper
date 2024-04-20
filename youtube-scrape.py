@@ -36,7 +36,7 @@ if response.status_code == 200:
             video_list.append(video_dict)
 
     for tag in soup.find_all('a', {'class': 'yt-simple-endpoint style-scope ytd-video-renderer'}):
-        tags = [tag.text.strip() for tag in tag.parent.select('.tag']]
+        tags = [tag.text.strip() for tag in tag.parent.select('.tag')]
 
         if search_query.lower() in [tag.lower() for tag in tags]:
             title = tag.parent.select_one('.title').text.strip()
