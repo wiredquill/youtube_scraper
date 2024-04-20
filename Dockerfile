@@ -5,7 +5,7 @@ MAINTAINER "Wiredquill"
 
 # Set labels for the image
 LABEL org.opencontainers.image.name=youtube-scraper
-LABEL Author=Wiredquill
+LABEL Author="Wiredquill"
 LABEL Description=A Python script to download YouTube transcripts and videos
 LABEL Version=1.0
 
